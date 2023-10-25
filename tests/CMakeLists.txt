@@ -17,7 +17,8 @@ enable_testing()
 
 add_executable(
   tests
-  tests.cpp
+  test_llist.cpp
+  test_ringbuffer.cpp
 )
 target_link_libraries(
   tests
