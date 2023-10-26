@@ -1,14 +1,6 @@
 #include <gtest/gtest.h>
 #include "llist.hpp"
 
-// Demonstrate some basic assertions.
-TEST(HelloTest, BasicAssertions) {
-  // Expect two strings not to be equal.
-  EXPECT_STRNE("hello", "world");
-  // Expect equality.
-  EXPECT_EQ(7 * 6, 42);
-}
-
 TEST(push_back_pop_back_behaviour, BasicAssertions) {
     LList<int> list;
     list.push_back(1);
