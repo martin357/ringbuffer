@@ -3,14 +3,14 @@
 #include "ringbuffer.hpp"
 
 TEST(Ringbuffer, RingIndex_operations) {
-    Ringbuffer<int, 3>::Index idx(0);
-    Ringbuffer<int, 3>::Index idx2(1);
-    EXPECT_EQ((int)idx, 0);
-    EXPECT_EQ((int)idx--, 0);
-    EXPECT_EQ((int)idx, 2);
-    EXPECT_EQ((int)++idx, 0);
+    Ringbuffer<size_t, 3>::Index idx(0);
+    Ringbuffer<size_t, 3>::Index idx2(1);
+    EXPECT_EQ((size_t)idx, 0);
+    EXPECT_EQ((size_t)idx--, 0);
+    EXPECT_EQ((size_t)idx, 2);
+    EXPECT_EQ((size_t)++idx, 0);
     EXPECT_NE(idx, idx2);
-    EXPECT_EQ((int)(idx - idx2), 2);
+    EXPECT_EQ((size_t)(idx - idx2), 2);
     EXPECT_EQ((idx-idx2) + (idx-idx2), idx2);
     EXPECT_NE(idx, idx2);
     EXPECT_EQ(idx, idx2-1);

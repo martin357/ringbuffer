@@ -4,15 +4,15 @@
     #include <iterator>
 #endif
 
-template<class T, int N>
+template<class T, size_t N>
 class Ringbuffer {
     T m_data[N];
 public:
     class Index {
-        int m_index{0};
+        size_t m_index{0};
     public:
-        constexpr Index(int _index) : m_index(_index) {}
-        explicit constexpr operator int() const { return m_index; }
+        constexpr Index(size_t _index) : m_index(_index) {}
+        explicit constexpr operator size_t() const { return m_index; }
         constexpr Index operator+(const Index & other) const {
             return (this->m_index + other.m_index) % N;
         }
@@ -51,7 +51,7 @@ public:
     class iterator : public std::iterator<
                                 std::random_access_iterator_tag,
                                 T,
-                                int,
+                                size_t,
                                 T*,
                                 T> {
         Ringbuffer *m_buf{nullptr};
@@ -64,7 +64,7 @@ public:
         constexpr iterator operator++(int) { auto tmp = *this; m_idx++; return tmp; }
         constexpr bool operator==(iterator other) const { return m_idx == other.m_idx; }
         constexpr bool operator!=(iterator other) const { return !(*this == other); }
-        constexpr T& operator*() const { return m_buf->m_data[(int)m_idx]; }
+        constexpr T& operator*() const { return m_buf->m_data[(size_t)m_idx]; }
     };
 #endif
 protected:
@@ -75,18 +75,18 @@ public:
     constexpr Ringbuffer() : m_head(0), m_tail(0) {}
 
     constexpr void push_front(const T & item) {
-        m_data[(int)--m_head] = item;
+        m_data[(size_t)--m_head] = item;
         if(m_head == m_tail) m_tail--;
     }
     constexpr void push_back(const T & item) {
-        m_data[(int)m_tail++] = item;
+        m_data[(size_t)m_tail++] = item;
         if(m_head == m_tail) m_head++;
     }
     constexpr const T & front() const {
-        return m_data[(int)m_head];
+        return m_data[(size_t)m_head];
     }
     constexpr const T & back() const {
-        return m_data[(int)(m_tail-1)];
+        return m_data[(size_t)(m_tail-1)];
     }
     constexpr void pop_front() {
         m_head++;
@@ -96,8 +96,8 @@ public:
     }
     constexpr bool full() const { return m_head == m_tail + 1; }
     constexpr bool empty() const { return m_head == m_tail; }
-    constexpr int size() const { return m_tail - m_head; }
-    constexpr int capacity() const { return N - 1; }
+    constexpr size_t size() const { return m_tail - m_head; }
+    constexpr size_t capacity() const { return N - 1; }
 #ifdef USE_ITERATORS
     constexpr iterator begin() { return iterator(this, m_head); }
     constexpr iterator end() { return iterator(this, m_tail); }
