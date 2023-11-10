@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#define USE_ITERATORS
 #include "ringbuffer.hpp"
 
 TEST(Ringbuffer, RingIndex_operations) {

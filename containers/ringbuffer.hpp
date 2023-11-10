@@ -1,5 +1,8 @@
+#pragma once
 
-#include <iterator>
+#ifdef USE_ITERATORS
+    #include <iterator>
+#endif
 
 template<class T, int N>
 class Ringbuffer {
@@ -44,7 +47,7 @@ public:
         }
         constexpr auto operator<=>(const Index & other) const = default;
     };
-
+#ifdef USE_ITERATORS
     class iterator : public std::iterator<
                                 std::random_access_iterator_tag,
                                 T,
@@ -63,7 +66,7 @@ public:
         constexpr bool operator!=(iterator other) const { return !(*this == other); }
         constexpr T& operator*() const { return m_buf->m_data[(int)m_idx]; }
     };
-
+#endif
 protected:
 
     Index m_head, m_tail;
@@ -95,6 +98,8 @@ public:
     constexpr bool empty() const { return m_head == m_tail; }
     constexpr int size() const { return m_tail - m_head; }
     constexpr int capacity() const { return N - 1; }
+#ifdef USE_ITERATORS
     constexpr iterator begin() { return iterator(this, m_head); }
     constexpr iterator end() { return iterator(this, m_tail); }
+#endif
 };
