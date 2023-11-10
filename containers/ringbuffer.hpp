@@ -2,7 +2,10 @@
 
 #ifdef USE_ITERATORS
     #include <iterator>
+    #include <initializer_list>
 #endif
+
+
 
 template<class T, size_t N>
 class Ringbuffer {
@@ -73,6 +76,8 @@ protected:
 
 public:
     constexpr Ringbuffer() : m_head(0), m_tail(0) {}
+    Ringbuffer(const Ringbuffer &) = delete;
+    Ringbuffer & operator=(const Ringbuffer &) = delete;
 
     constexpr void push_front(const T & item) {
         m_data[(size_t)--m_head] = item;
@@ -106,5 +111,10 @@ public:
 #ifdef USE_ITERATORS
     constexpr iterator begin() { return iterator(this, m_head); }
     constexpr iterator end() { return iterator(this, m_tail); }
+    constexpr Ringbuffer(std::initializer_list<T> init) : m_head(0), m_tail(0) {
+        for(T value : init) {
+            push_back(value);
+        }
+    }
 #endif
 };

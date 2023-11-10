@@ -2,6 +2,12 @@
 
 #include <cassert>
 
+#ifdef USE_ITERATORS
+    #include <iterator>
+    #include <initializer_list>
+#endif
+
+
 template<class T>
 class LList {
     struct Node {
@@ -12,7 +18,14 @@ class LList {
     Node * head{nullptr};
     Node * tail{nullptr};
 public:
-    class iterator {
+
+#ifdef USE_ITERATORS 
+    class iterator : public std::iterator<
+                                std::bidirectional_iterator_tag,
+                                T,
+                                size_t,
+                                T*,
+                                T> {
         Node * node{nullptr};
         iterator(Node * node) { this->node = node; }
         friend class LList;
@@ -45,6 +58,14 @@ public:
     iterator end() const { return iterator(nullptr); }
     const_iterator const_begin() const { return const_iterator(head); }
     const_iterator const_end() const { return const_iterator(nullptr); }
+#endif // USE_ITERATORS
+
+    LList(const LList &) = delete;
+    LList & operator=(const LList &) = delete;
+    LList() {}
+    LList(std::initializer_list<T> list) {
+        for(auto value : list) push_back(value);
+    }
 
     void push_front(const T & item) {
         Node * node = new Node{item, nullptr, nullptr};

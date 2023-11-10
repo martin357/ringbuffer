@@ -132,3 +132,10 @@ TEST(Ringbuffer, destructor_for_each_item) {
     delete ring;
     EXPECT_EQ(Leaky::counter, 0);
 }
+
+TEST(Ringbuffer, initializer_list_constructor) {
+    Ringbuffer<int, 10> ring = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    // Buffer may contain only 9 values, than circles back
+    EXPECT_EQ(ring[0], 2);
+    EXPECT_EQ(ring[-1], 10);
+}

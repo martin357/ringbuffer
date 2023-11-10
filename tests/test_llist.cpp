@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
+#define USE_ITERATORS
 #include "llist.hpp"
 
-TEST(push_back_pop_back_behaviour, BasicAssertions) {
+TEST(LList, push_back_pop_back_behaviour) {
     LList<int> list;
     list.push_back(1);
     list.push_back(2);
@@ -21,7 +22,7 @@ TEST(push_back_pop_back_behaviour, BasicAssertions) {
     EXPECT_EQ(list.empty(), true);
 }
 
-TEST(push_front_pop_front_behaviour, BasicAssertions) {
+TEST(LList, push_front_pop_front_behaviour) {
     LList<int> list;
     list.push_front(1);
     list.push_front(2);
@@ -41,7 +42,7 @@ TEST(push_front_pop_front_behaviour, BasicAssertions) {
     EXPECT_EQ(list.empty(), true);
 }
 
-TEST(iterators, BasicAssertions) {
+TEST(LList, iterators) {
     LList<int> list;
     for(int i = 0; i < 10; ++i) {
         list.push_back(i);
@@ -58,7 +59,7 @@ TEST(iterators, BasicAssertions) {
     }
 }
 
-TEST(const_iterators, BasicAssertions) {
+TEST(LList, const_iterators) {
     LList<int> list;
     for(int i = 0; i < 10; ++i) {
         list.push_back(i);
@@ -87,7 +88,7 @@ struct LeakingCanary {
 };
 int LeakingCanary::i = 0;
 
-TEST(destructor, BasicAssertions) {
+TEST(LList, destructor) {
     {
         LList<LeakingCanary> list;
         for(int i = 0; i < 10; i++) {
@@ -95,5 +96,17 @@ TEST(destructor, BasicAssertions) {
         }
     }
     EXPECT_EQ(false, LeakingCanary::is_leaking());
-
+}
+TEST(LList, intializer_list) {
+    LList<int> list{1,2,3,4,5};
+    EXPECT_EQ(1, list.front());
+    EXPECT_EQ(5, list.back());
+}
+TEST(LList, range) {
+    LList<int> list{1,2,3,4,5};
+    int expected[]{1,2,3,4,5};
+    int idx{0};
+    for(auto value : list) {
+        EXPECT_EQ(value, expected[idx++]);
+    }
 }

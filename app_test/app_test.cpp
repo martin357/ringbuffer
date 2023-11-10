@@ -1,4 +1,5 @@
 #include <iostream>
+#define USE_ITERATORS
 #include <llist.hpp>
 
 
