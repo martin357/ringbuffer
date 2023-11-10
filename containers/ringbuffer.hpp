@@ -98,6 +98,11 @@ public:
     constexpr bool empty() const { return m_head == m_tail; }
     constexpr size_t size() const { return m_tail - m_head; }
     constexpr size_t capacity() const { return N - 1; }
+    constexpr T & operator[](int idx) {
+        return idx >= 0 ?
+            m_data[(size_t)(m_head + (Index(idx)))]
+            : m_data[(size_t)(m_tail + (Index(idx)))];
+    }
 #ifdef USE_ITERATORS
     constexpr iterator begin() { return iterator(this, m_head); }
     constexpr iterator end() { return iterator(this, m_tail); }

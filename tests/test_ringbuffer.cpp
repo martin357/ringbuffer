@@ -107,4 +107,28 @@ TEST(Ringbuffer, pushing_tail) {
     EXPECT_FALSE(ring.empty());
 }
 
+TEST(Ringbuffer, indexing) {
+    Ringbuffer<int, 5> ring;
+    for(int i = 0; i < 4; ++i) {
+        ring.push_back(i);
+        EXPECT_EQ(ring[0], 0);
+        EXPECT_EQ(ring[-1], i);
+    }
+    EXPECT_EQ(ring[-2], 2);
+}
 
+struct Leaky {
+    static int counter;
+    Leaky() { counter++; }
+    ~Leaky() { counter--; }
+};
+int Leaky::counter = 0;
+
+TEST(Ringbuffer, destructor_for_each_item) {
+    auto ring = new Ringbuffer<Leaky, 3>;
+    for(int i = 0; i < 6; i++) {
+        ring->push_front(Leaky());
+    }
+    delete ring;
+    EXPECT_EQ(Leaky::counter, 0);
+}
