@@ -100,5 +100,3 @@ private:
         write_newline();
     }
 };
-
-#endif  // LOGGING_H
