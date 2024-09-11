@@ -119,7 +119,7 @@ public:
     }
     constexpr bool full() const { return m_head == m_tail + 1; }
     constexpr bool empty() const { return m_head == m_tail; }
-    constexpr size_t size() const { return m_tail - m_head; }
+    constexpr size_t size() const { return static_cast<size_t>(m_tail - m_head); }
     constexpr size_t capacity() const { return N - 1; }
     constexpr T & operator[](int idx) {
         return idx >= 0 ?
