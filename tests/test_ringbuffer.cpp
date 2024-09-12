@@ -157,3 +157,16 @@ TEST(Ringbuffer, initializer_list_constructor) {
     EXPECT_EQ(ring[0], 2);
     EXPECT_EQ(ring[-1], 10);
 }
+
+TEST(Ringbuffer, contained_size) {
+    // Over-filled buffer
+    Ringbuffer<int, 10> ring = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    EXPECT_EQ(ring.size(), (size_t) 9);
+    ring.pop_back();
+    EXPECT_EQ(ring.size(), (size_t) 8);
+}
+
+TEST(Ringbuffer, zero_size) {
+    Ringbuffer<int, 16> ring;
+    EXPECT_EQ(ring.size(), (size_t) 0);
+}
